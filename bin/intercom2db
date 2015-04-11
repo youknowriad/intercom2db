@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+'use strict';
+
+if (process.argv.length < 3) {
+  throw 'You must provide a config file';
+}
+var config = require(require('path').resolve(process.cwd(), process.argv[2]));
+var runner = require('../src/runner');
+runner.run(config);
