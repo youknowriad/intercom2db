@@ -1,12 +1,10 @@
 {
   "name": "intercom2db",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "task to export intercom API to a database",
   "main": "src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
+  "repository": "youknowriad/intercom2db",
+  "author": "Riad Benguella <benguella@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "bluebird": "^2.9.24",
