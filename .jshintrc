@@ -18,6 +18,8 @@
   "smarttabs": true,
   "white": true,
   "globals": {
-    "require": false
+    "require": false,
+    "process": false,
+    "console": false
   }
 }

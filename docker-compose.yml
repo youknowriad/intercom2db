@@ -1,0 +1,23 @@
+app:
+    build: .
+    links:
+        - db:db
+    environment:
+        - I2DB_DATABASE_HOST=db
+        - I2DB_DATABASE_USER=root
+        - I2DB_DATABASE_PASSWORD=root
+        - I2DB_DATABASE_NAME=intercom
+        - I2DB_API_APP_ID
+        - I2DB_API_KEY
+    volumes:
+        - .:/app
+        - ./var/log:/var/log/intercom2db
+        - ./var/run:/var/run/intercom2db
+
+db:
+    image: mysql:5.5
+    environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_DATABASE=intercom
+    ports:
+        - 3306:3306
