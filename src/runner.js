@@ -27,6 +27,6 @@ module.exports = {
       .then(function() {
         connexion.end();
       })
-      .catch(console.log());
+      .catch(console.log);
   }
 };
