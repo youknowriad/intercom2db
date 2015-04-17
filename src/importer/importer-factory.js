@@ -7,7 +7,7 @@ module.exports = function(dp, Promise) {
             return this.import(connexion, intercomConfig);
           }.bind(this));
         },
-        
+
         import: function(connexion, intercomConfig) {
           var pump = new dp.Pump();
           return new Promise(function(resolve, reject) {
@@ -41,7 +41,7 @@ module.exports = function(dp, Promise) {
                 resolve();
               }, reject);
           });
-        }  
+        }
       };
     }
   };

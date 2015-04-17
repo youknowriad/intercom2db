@@ -18,8 +18,7 @@ module.exports = function(Promise) {
             return reject(err);
           }
           connexion.query('CREATE TABLE IF NOT EXISTS user (' +
-              'id int(11) AUTO_INCREMENT primary key,' +
-              'intercom_id varchar(255),' +
+              'id varchar(255) primary key,' +
               'user_id varchar(255) DEFAULT NULL,' +
               'name varchar(255) DEFAULT NULL,' +
               'email varchar(255) DEFAULT NULL,' +
@@ -56,7 +55,7 @@ module.exports = function(Promise) {
               }
               connexion.query('CREATE TABLE IF NOT EXISTS user_tags (' +
                 'tag_id varchar(255),' +
-                'user_id int(11),' +
+                'user_id varchar(255),' +
                 'FOREIGN KEY fk_user(user_id) REFERENCES user(id) ON DELETE cascade,' +
                 'FOREIGN KEY fk_tag(tag_id) REFERENCES tag(id) ON DELETE cascade' +
               ') ENGINE=InnoDB', function(err) {
@@ -74,7 +73,7 @@ module.exports = function(Promise) {
                   }
                   connexion.query('CREATE TABLE IF NOT EXISTS user_segments (' +
                     'segment_id varchar(255),' +
-                    'user_id int(11),' +
+                    'user_id varchar(255),' +
                     'FOREIGN KEY fk_user(user_id) REFERENCES user(id) ON DELETE cascade,' +
                     'FOREIGN KEY fk_segment(segment_id) REFERENCES segment(id) ON DELETE cascade' +
                   ') ENGINE=InnoDB', function() {
