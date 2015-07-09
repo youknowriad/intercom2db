@@ -20,10 +20,10 @@ module.exports = {
       .then(function() {
         return query(
           'CREATE TABLE IF NOT EXISTS company_custom_attributes (' +
-          'company_id varchar(255) DEFAULT NULL REFERENCES company (id) ON DELETE cascade,' +
+          'company_id varchar(255) DEFAULT NULL REFERENCES company(id) ON DELETE cascade,' +
           'name varchar(255) DEFAULT NULL,' +
           'value text DEFAULT NULL' +
-          ')')
+          ')');
       })
       .then(function() {
         return query('CREATE TABLE IF NOT EXISTS users (' +
@@ -48,16 +48,16 @@ module.exports = {
         'updated_at integer DEFAULT NULL,' +
         'session_count integer DEFAULT NULL,' +
         'user_agent_data text DEFAULT NULL,' +
-        'company_id varchar(255) DEFAULT NULL REFERENCES company (id) ON DELETE cascade' +
+        'company_id varchar(255) DEFAULT NULL REFERENCES company(id) ON DELETE cascade' +
         ')');
       })
       .then(function() {
         return query(
           'CREATE TABLE IF NOT EXISTS user_custom_attributes (' +
-          'user_id varchar(255) DEFAULT NULL REFERENCES users (id) ON DELETE cascade,' +
+          'user_id varchar(255) DEFAULT NULL REFERENCES users(id) ON DELETE cascade,' +
           'name varchar(255) DEFAULT NULL,' +
           'value text DEFAULT NULL' +
-          ')')
+          ')');
       })
       .then(function() {
         return query('CREATE TABLE IF NOT EXISTS tag (' +
@@ -67,8 +67,8 @@ module.exports = {
       })
       .then(function() {
         return query('CREATE TABLE IF NOT EXISTS user_tags (' +
-        'tag_id varchar(255) REFERENCES users(id) ON DELETE cascade,' +
-        'user_id varchar(255) REFERENCES tag(id) ON DELETE cascade' +
+        'tag_id varchar(255) REFERENCES tag(id) ON DELETE cascade,' +
+        'user_id varchar(255) REFERENCES users(id) ON DELETE cascade' +
         ')');
       })
       .then(function() {
@@ -83,6 +83,19 @@ module.exports = {
         return query('CREATE TABLE IF NOT EXISTS user_segments (' +
         'segment_id varchar(255) REFERENCES segment(id) ON DELETE cascade,' +
         'user_id varchar(255) REFERENCES users(id) ON DELETE cascade' +
+        ')');
+      })
+      .then(function() {
+        return query('DROP TABLE IF EXISTS conversation; CREATE TABLE IF NOT EXISTS conversation (' +
+        'id varchar(255),' +
+        'message_id varchar(255),' +
+        'type varchar(1),' +
+        'created_at integer  DEFAULT NULL,' +
+        'updated_at integer DEFAULT NULL,' +
+        'subject text DEFAULT NULL,' +
+        'body text DEFAULT NULL,' +
+        'user_id varchar(255) DEFAULT NULL REFERENCES users(id) ON DELETE cascade,' +
+        'PRIMARY KEY(id, message_id)' +
         ')');
       });
   }

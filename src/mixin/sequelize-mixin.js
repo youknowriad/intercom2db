@@ -26,8 +26,10 @@ module.exports = function (connection) {
       });
     };
 
-    return target.escape = function (value) {
-      return value
+    target.escape = function (value) {
+      return value;
     };
+
+    return target;
   };
 };

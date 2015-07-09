@@ -1,6 +1,6 @@
-module.exports = function(dp) {
+module.exports = function(Promise, dp) {
   return {
-    get: function(label, prepare, process) {
+    get: function(label, prepare, process, detailed) {
       return {
         run: function(connexion, intercomConfig) {
           return prepare(connexion, intercomConfig).then(function() {
@@ -17,13 +17,40 @@ module.exports = function(dp) {
               query: function(page) {
                 page = page ? page : 1;
                 console.log('Requesting ' + label + ' : page ' + page);
-                return this.get('https://api.intercom.io/' + label + '?per_page=50&page=' + page, {
+
+                var promise = this.get('https://api.intercom.io/' + label + '?per_page=50&page=' + page, {
                   headers: {
                     Accept: 'application/json'
                   },
                   username: intercomConfig.appId,
                   password: intercomConfig.apiKey
                 });
+
+                if (detailed) {
+                  var self = this;
+
+                  promise = promise.then(function(response) {
+                    var promises = [];
+
+                    response.result[label].forEach(function(item) {
+                      promises.push(self.get('https://api.intercom.io/' + label + '/' + item.id, {
+                        headers: {
+                          Accept: 'application/json'
+                        },
+                        username: intercomConfig.appId,
+                        password: intercomConfig.apiKey
+                      }));
+                    });
+
+                    return Promise.all(promises).then(function(items) {
+                      response.result[label] = items.map(function(item) { return item.result; });
+
+                      return response;
+                    });
+                  });
+                }
+
+                return promise;
               },
               resultMapping: function(response) {
                 return response.result[label];

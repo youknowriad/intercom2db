@@ -1,6 +1,9 @@
 module.exports = function(Promise, importerFactory) {
   function prepare(connexion) {
-    return connexion.query('DELETE FROM users', { type: connexion.QueryTypes.DELETE });
+    return connexion.query('DELETE FROM users', { type: connexion.QueryTypes.DELETE })
+      .then(function() {
+        connexion.query('DELETE FROM user_custom_attributes', { type: connexion.QueryTypes.DELETE });
+      });
   }
 
   function process(user) {

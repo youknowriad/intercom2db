@@ -4,7 +4,7 @@ module.exports = function(Promise, importerFactory) {
     return connexion.query('DELETE FROM company', { type: connexion.QueryTypes.DELETE })
       .then(function() {
         connexion.query('DELETE FROM company_custom_attributes', { type: connexion.QueryTypes.DELETE });
-      })
+      });
   }
   
   function process(company) {

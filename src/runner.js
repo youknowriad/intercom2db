@@ -1,10 +1,11 @@
 var dp = require('datapumps');
 var Promise = require('bluebird');
-var importerFactory = require('./importer/importer-factory')(dp);
+var importerFactory = require('./importer/importer-factory')(Promise, dp);
 var userImporter = require('./importer/user-importer')(Promise, importerFactory);
 var companyImporter = require('./importer/company-importer')(Promise, importerFactory);
 var tagImporter = require('./importer/tag-importer')(importerFactory);
 var segmentImporter = require('./importer/segment-importer')(importerFactory);
+var conversationImporter = require('./importer/conversation-importer')(Promise, importerFactory);
 var schemaCreator = require('./database/schema-create');
 
 module.exports = {
@@ -31,6 +32,9 @@ module.exports = {
       })
       .then(function() {
         return userImporter.run(connexion, intercomConfig);
+      })
+      .then(function() {
+        return conversationImporter.run(connexion, intercomConfig);
       })
       .catch(console.error);
   }
