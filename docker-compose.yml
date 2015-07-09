@@ -9,6 +9,7 @@ app:
         - I2DB_DATABASE_USER=intercom2db
         - I2DB_DATABASE_PASSWORD=intercom2db
         - I2DB_DATABASE_NAME=intercom2db
+        - I2DB_REFRESH_DELAY
         - I2DB_API_APP_ID
         - I2DB_API_KEY
     volumes:
@@ -31,3 +32,5 @@ pg:
         - DB_NAME=intercom2db
     ports:
         - 5432:5432
+    volumes:
+        - /var/lib/postgresql:/var/lib/postgresql
