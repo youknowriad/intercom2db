@@ -18,6 +18,14 @@ module.exports = {
       'user_count integer DEFAULT NULL' +
       ')')
       .then(function() {
+        return query(
+          'CREATE TABLE IF NOT EXISTS company_custom_attributes (' +
+          'company_id varchar(255) DEFAULT NULL REFERENCES company (id) ON DELETE cascade,' +
+          'name varchar(255) DEFAULT NULL,' +
+          'value text DEFAULT NULL' +
+          ')')
+      })
+      .then(function() {
         return query('CREATE TABLE IF NOT EXISTS users (' +
         'id varchar(255) primary key,' +
         'user_id varchar(255) DEFAULT NULL,' +
@@ -42,6 +50,14 @@ module.exports = {
         'user_agent_data text DEFAULT NULL,' +
         'company_id varchar(255) DEFAULT NULL REFERENCES company (id) ON DELETE cascade' +
         ')');
+      })
+      .then(function() {
+        return query(
+          'CREATE TABLE IF NOT EXISTS user_custom_attributes (' +
+          'user_id varchar(255) DEFAULT NULL REFERENCES users (id) ON DELETE cascade,' +
+          'name varchar(255) DEFAULT NULL,' +
+          'value text DEFAULT NULL' +
+          ')')
       })
       .then(function() {
         return query('CREATE TABLE IF NOT EXISTS tag (' +
