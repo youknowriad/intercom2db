@@ -1,21 +1,33 @@
 app:
     build: .
     links:
-        - db:db
+        - mysql:mysql
+        - pg:pg
     environment:
-        - I2DB_DATABASE_HOST=db
-        - I2DB_DATABASE_USER=root
-        - I2DB_DATABASE_PASSWORD=root
-        - I2DB_DATABASE_NAME=intercom
+        - I2DB_DATABASE_DIALECT=mysql
+        - I2DB_DATABASE_HOST=mysql
+        - I2DB_DATABASE_USER=intercom2db
+        - I2DB_DATABASE_PASSWORD=intercom2db
+        - I2DB_DATABASE_NAME=intercom2db
         - I2DB_API_APP_ID
         - I2DB_API_KEY
     volumes:
         - .:/app
 
-db:
+mysql:
     image: mysql:5.5
     environment:
-        - MYSQL_ROOT_PASSWORD=root
-        - MYSQL_DATABASE=intercom
+        - MYSQL_USER=intercom2db
+        - MYSQL_PASSWORD=intercom2db
+        - MYSQL_DATABASE=intercom2db
     ports:
         - 3306:3306
+
+pg:
+    image: sameersbn/postgresql:9.4
+    environment:
+        - DB_USER=intercom2db
+        - DB_PASS=intercom2db
+        - DB_NAME=intercom2db
+    ports:
+        - 5432:5432

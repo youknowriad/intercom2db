@@ -1,18 +1,15 @@
-module.exports = function(Promise, importerFactory) {
-
+module.exports = function(importerFactory) {
   function prepare(connexion) {
-    return new Promise(function(resolve, reject) {
-      connexion.query('DELETE FROM tag', function(err) {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
-      });
-    });
+    return connexion.query('DELETE FROM tag', { type: connexion.QueryTypes.DELETE });
   }
   
   function process(tag) {
-    return this.query('INSERT INTO tag (id, name) VALUES (?, ?)', tag.id, tag.name);
+    var connexion = this.connection;
+
+    return this.query('INSERT INTO tag (id, name) VALUES (?, ?)', {
+      type: connexion.QueryTypes.INSERT,
+      replacements: [tag.id, tag.name]
+    });
   }
   
   return importerFactory.get('tags', prepare, process);

@@ -9,7 +9,10 @@
   "dependencies": {
     "bluebird": "^2.9.24",
     "datapumps": "^0.3.29",
-    "mysql": "^2.6.1"
+    "mysql": "^2.6.1",
+    "pg": "^4.4.0",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.3.2"
   },
   "bin": {
     "intercom2db": "bin/intercom2db"

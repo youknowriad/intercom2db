@@ -1,5 +1,6 @@
 module.exports = {
   database: {
+    dialect: process.env.I2DB_DATABASE_DIALECT || 'mysql',
     host: process.env.I2DB_DATABASE_HOST || 'localhost',
     port: process.env.I2DB_DATABASE_PORT || 3306,
     user: process.env.I2DB_DATABASE_USER || 'root',
