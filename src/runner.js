@@ -36,6 +36,9 @@ module.exports = {
       .then(function() {
         return conversationImporter.run(connexion, intercomConfig);
       })
-      .catch(console.error);
+      .catch(console.error)
+      .finally(function() {
+        connexion.close();
+      });
   }
 };
