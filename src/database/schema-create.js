@@ -86,7 +86,7 @@ module.exports = {
         ')');
       })
       .then(function() {
-        return query('DROP TABLE IF EXISTS conversation; CREATE TABLE IF NOT EXISTS conversation (' +
+        return query('CREATE TABLE IF NOT EXISTS conversation (' +
         'id varchar(255),' +
         'message_id varchar(255),' +
         'type varchar(1),' +
