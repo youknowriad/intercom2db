@@ -1,6 +1,6 @@
 module.exports = function(Promise, dp) {
   return {
-    get: function(label, prepare, process, detailed) {
+    get: function(label, prepare, persist, detailed) {
       return {
         run: function(connexion, intercomConfig) {
           return prepare(connexion, intercomConfig).then(function() {
@@ -16,7 +16,7 @@ module.exports = function(Promise, dp) {
             .fromRest({
               query: function(page) {
                 page = page ? page : 1;
-                console.log('Requesting ' + label + ' : page ' + page);
+                process.stdout.write('Requesting ' + label + ' : page ' + page + '\n');
 
                 var promise = this.get('https://api.intercom.io/' + label + '?per_page=50&page=' + page, {
                   headers: {
@@ -60,11 +60,11 @@ module.exports = function(Promise, dp) {
               }
             })
             .mixin(require('../mixin/sequelize-mixin')(connexion))
-            .process(process)
+            .process(persist)
             .logErrorsToConsole()
             .start()
             .whenFinished().then(function() {
-              console.log('Done updating ' + label);
+              process.stdout.write('Done updating ' + label + '\n');
             });
         }
       };

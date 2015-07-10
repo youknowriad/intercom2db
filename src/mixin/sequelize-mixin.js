@@ -1,5 +1,5 @@
 module.exports = function (connection) {
-  if ((connection == null) || typeof (connection != null ? connection.query : void 0) !== 'function') {
+  if (!connection || typeof (connection ? connection.query : void 0) !== 'function') {
     throw new Error('Sequelize mixin requires connection to be given');
   }
 

@@ -9,12 +9,12 @@ var runner = require('../src/runner');
 
 var run = function() {
     runner.run(config).then(function() {
-        console.log('Done updating datas.');
+        process.stdout.write('Done updating datas.\n');
 
         if (process.env.I2DB_REFRESH_DELAY) {
             var delay = parseInt(process.env.I2DB_REFRESH_DELAY, 10);
 
-            console.log('Process will start again within ' + delay + ' seconds. Press CTRL+C to cancel.');
+            process.stdout.write('Process will start again within ' + delay + ' seconds. Press CTRL+C to cancel.\n');
 
             setTimeout(run, delay * 1000);
         }
