@@ -19,12 +19,16 @@ module.exports = function(Promise, importerFactory) {
       var promises = [];
 
       if(conversation.conversation_parts && conversation.conversation_parts.conversation_parts) {
-        conversation.conversation_parts.conversation_parts.forEach(function(part) {
-          promises.push(query('INSERT INTO conversation (id, message_id, type, created_at, updated_at, body, user_id) VALUES (?, ?, \'m\', ?, ?, ?, ?)', {
-            type: connexion.QueryTypes.SELECT,
-            replacements: [conversation.id, part.id, part.created_at, part.updated_at, part.body, part.author.id]
-          }));
-        });
+        conversation.conversation_parts.conversation_parts
+          .filter(function(part) {
+            return part.part_type === 'comment';
+          })
+          .forEach(function(part) {
+            promises.push(query('INSERT INTO conversation (id, message_id, type, created_at, updated_at, body, user_id) VALUES (?, ?, \'m\', ?, ?, ?, ?)', {
+              type: connexion.QueryTypes.SELECT,
+              replacements: [conversation.id, part.id, part.created_at, part.updated_at, part.body, part.author.id]
+            }));
+          });
       }
 
       return Promise.all(promises);
