@@ -1,12 +1,3 @@
-var dp = require('datapumps');
-var Promise = require('bluebird');
-var importerFactory = require('./importer/importer-factory')(Promise, dp);
-var userImporter = require('./importer/user-importer')(Promise, importerFactory);
-var adminImporter = require('./importer/admin-importer')(Promise, importerFactory);
-var companyImporter = require('./importer/company-importer')(Promise, importerFactory);
-var tagImporter = require('./importer/tag-importer')(importerFactory);
-var segmentImporter = require('./importer/segment-importer')(importerFactory);
-var conversationImporter = require('./importer/conversation-importer')(Promise, importerFactory);
 var schemaCreator = require('./database/schema-create');
 
 module.exports = {
@@ -18,33 +9,27 @@ module.exports = {
       host: config.database.host,
       port: config.database.port,
       dialect: config.database.dialect,
-      logging: false
+      logging: config.debug
     });
 
-    return schemaCreator.create(connexion)
-      .then(function() {
-        return tagImporter.run(connexion, intercomConfig);
-      })
-      .then(function() {
-        return segmentImporter.run(connexion, intercomConfig);
-      })
-      .then(function() {
-        return companyImporter.run(connexion, intercomConfig);
-      })
-      .then(function() {
-        return userImporter.run(connexion, intercomConfig);
-      })
-      .then(function() {
-        return adminImporter.run(connexion, intercomConfig);
-      })
-      .then(function() {
-        return conversationImporter.run(connexion, intercomConfig);
-      })
+    var schema = {
+      name: config.database.schema || '',
+      toSQL: function() {
+        return config.database.schema ? config.database.schema + '.' : '';
+      }
+    };
+
+    var importerFactory = require('./importer/importer-factory')(connexion, schema, intercomConfig);
+
+    return schemaCreator.create(connexion, schema)
+      .then(importerFactory.get('tags').run)
+      .then(importerFactory.get('segments').run)
+      .then(importerFactory.get('companies').run)
+      .then(importerFactory.get('users').run)
+      .then(importerFactory.get('admins').run)
+      .then(importerFactory.get('conversations', true).run)
       .catch(function() {
         process.stderr.write([].slice.call(arguments).join('\n') +  '\n');
-      })
-      .finally(function() {
-        connexion.close();
       });
   }
 };

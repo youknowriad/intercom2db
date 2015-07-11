@@ -1,14 +1,12 @@
-module.exports = function(Promise, dp) {
-  return {
-    get: function(label, prepare, persist, detailed) {
-      return {
-        run: function(connexion, intercomConfig) {
-          return prepare(connexion, intercomConfig).then(function() {
-            return this.import(connexion, intercomConfig);
-          }.bind(this));
-        },
+var dp = require('datapumps');
+var Promise = require('bluebird');
 
-        import: function(connexion, intercomConfig) {
+module.exports = function(connexion, schema, intercomConfig) {
+  return {
+    get: function(label, detailed) {
+      var Importer = require('./' + label + '-importer'),
+        importer = new Importer(connexion, schema),
+        run = function() {
           var pump = new dp.Pump();
 
           return pump
@@ -60,12 +58,17 @@ module.exports = function(Promise, dp) {
               }
             })
             .mixin(require('../mixin/sequelize-mixin')(connexion))
-            .process(persist)
+            .process(importer.process)
             .logErrorsToConsole()
             .start()
             .whenFinished().then(function() {
               process.stdout.write('Done updating ' + label + '\n');
             });
+        };
+
+      return {
+        run: function() {
+          return importer.prepare(connexion, schema).then(run);
         }
       };
     }

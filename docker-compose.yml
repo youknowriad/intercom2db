@@ -10,6 +10,7 @@ app:
         - I2DB_DATABASE_USER=intercom2db
         - I2DB_DATABASE_PASSWORD=intercom2db
         - I2DB_DATABASE_NAME=intercom2db
+        - I2DB_SCHEMA_NAME
         - I2DB_REFRESH_DELAY
         - I2DB_API_APP_ID
         - I2DB_API_KEY
