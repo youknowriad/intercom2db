@@ -4,7 +4,7 @@ RUN sed -i 's?x86_64/packages/?x86_64/generic/packages/?' /etc/opkg.conf && \
     opkg-cl update && \
     opkg-cl upgrade
 
-ENV NODE_ENV=production
+ENV NODE_ENV production
 
 COPY . /app
 
