@@ -9,7 +9,7 @@ module.exports = {
       promise = Promise.resolve(true);
 
     if (schema.name) {
-      promise = query('DROP SCHEMA IF EXISTS ' + schema.name).then(function() {
+      promise = query('DROP SCHEMA IF EXISTS ' + schema.name + ' CASCADE').then(function() {
         return query('CREATE SCHEMA ' + schema.name);
       });
     }
