@@ -10,7 +10,8 @@ COPY . /app
 
 WORKDIR /app
 
-RUN npm install && \
+RUN npm install -g node-gyp && \
+    npm install && \
     npm dedupe && \
     npm cache clean && \
     (rm -rf /tmp/* || true)
