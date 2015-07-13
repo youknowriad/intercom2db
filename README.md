@@ -56,15 +56,16 @@ docker run --name intercom2db \
 This will fire up a container and load your data in `you.mysql` server. Here is the list of the available environment
 variables:
 
-| Name                     | Default     | Description             |
-| ------------------------ | ----------- | ----------------------- |
-| `I2DB_DATABASE_HOST`     | `localhost` | MySQL host              |
-| `I2DB_DATABASE_PORT`     | `3306`      | MySQL port              |
-| `I2DB_DATABASE_USER`     | `root`      | MySQL username          |
-| `I2DB_DATABASE_PASSWORD` | N/A         | MySQL password          |
-| `I2DB_DATABASE_NAME`     | `intercom`  | MySQL database name     |
-| `I2DB_API_APP_ID`        | N/A         | Intercom application ID |
-| `I2DB_API_KEY`           | N/A         | Intercom API key        |
+| Name                     | Default     | Description                     |
+| ------------------------ | ----------- | ------------------------------- |
+| `I2DB_DATABASE_HOST`     | `localhost` | Database host                   |
+| `I2DB_DATABASE_PORT`     | `3306`      | Database port                   |
+| `I2DB_DATABASE_USER`     | `root`      | Database username               |
+| `I2DB_DATABASE_PASSWORD` | N/A         | Database password               |
+| `I2DB_DATABASE_NAME`     | `intercom`  | Database database name          |
+| `I2DB_API_APP_ID`        | N/A         | Intercom application ID         |
+| `I2DB_API_KEY`           | N/A         | Intercom API key                |
+| `I2DB_REFRESH_DELAY`     | N/A         | Auto-refresh delay (in seconds) |
 
 If you don't want to use environment variables, you can still share a configuration file with your container
 thanks to docker volumes:
@@ -87,4 +88,13 @@ export I2DB_API_KEY=your_intercom_api_key
 docker-composer up
 ```
 
-This will boot a mysql container and an Intercom2db container and link them together.
+This will boot two database containers (on for MySQL and one for PostgreSQL) and an Intercom2db container and link them together.
+
+By default, `intercom2db` will die right after the loading process is finished. If you want to keep the containers alive
+you will have to enable auto-refresh:
+
+```
+export I2DB_REFRESH_DELAY=3600
+
+docker-composer up
+```

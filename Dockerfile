@@ -4,13 +4,14 @@ RUN sed -i 's?x86_64/packages/?x86_64/generic/packages/?' /etc/opkg.conf && \
     opkg-cl update && \
     opkg-cl upgrade
 
-ENV NODE_ENV=production
+ENV NODE_ENV production
 
 COPY . /app
 
 WORKDIR /app
 
-RUN npm install && \
+RUN npm install -g node-gyp && \
+    npm install && \
     npm dedupe && \
     npm cache clean && \
     (rm -rf /tmp/* || true)

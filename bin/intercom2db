@@ -6,4 +6,20 @@ if (process.argv.length < 3) {
 }
 var config = require(require('path').resolve(process.cwd(), process.argv[2]));
 var runner = require('../src/runner');
-runner.run(config);
+
+var run = function() {
+    runner.run(config).then(function() {
+        process.stdout.write('Done updating datas.\n');
+
+        if (process.env.I2DB_REFRESH_DELAY) {
+            var delay = parseInt(process.env.I2DB_REFRESH_DELAY, 10);
+
+            process.stdout.write('Process will start again within ' + delay + ' seconds. Press CTRL+C to cancel.\n');
+
+            setTimeout(run, delay * 1000);
+        }
+    });
+};
+
+run();
+
