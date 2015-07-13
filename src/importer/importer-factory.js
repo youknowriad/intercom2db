@@ -1,10 +1,7 @@
-var dp = require('datapumps');
-var Promise = require('bluebird');
-
-module.exports = function(connexion, schema, intercomConfig) {
+module.exports = function(dp, dpMixin, Promise, connexion, schema, intercomConfig) {
   return {
     get: function(label, detailed) {
-      var Importer = require('./' + label + '-importer'),
+      var Importer = require('./' + label + '-importer')(Promise),
         importer = new Importer(connexion, schema),
         run = function() {
           var pump = new dp.Pump();
@@ -57,7 +54,7 @@ module.exports = function(connexion, schema, intercomConfig) {
                 return response.result.pages && response.result.pages.next ? response.result.pages.page + 1 : null;
               }
             })
-            .mixin(require('../mixin/sequelize-mixin')(connexion))
+            .mixin(dpMixin(connexion))
             .process(importer.process)
             .logErrorsToConsole()
             .start()

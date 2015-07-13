@@ -1,4 +1,7 @@
-var schemaCreator = require('./database/schema-create');
+var Promise = require('bluebird');
+var dp = require('datapumps');
+var schemaCreator = require('./database/schema-create')(Promise);
+var sequelizeMixin = require('./mixin/sequelize-mixin');
 
 module.exports = {
   run: function(config) {
@@ -19,7 +22,7 @@ module.exports = {
       }
     };
 
-    var importerFactory = require('./importer/importer-factory')(connexion, schema, intercomConfig);
+    var importerFactory = require('./importer/importer-factory')(dp, sequelizeMixin, Promise, connexion, schema, intercomConfig);
 
     return schemaCreator.create(connexion, schema)
       .then(importerFactory.get('tags').run)
